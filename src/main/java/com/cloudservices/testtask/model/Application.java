@@ -21,6 +21,7 @@ public class Application {
 
     private String content;
 
+    @Enumerated(EnumType.STRING)
     private EStatus status;
 
     @OneToMany
