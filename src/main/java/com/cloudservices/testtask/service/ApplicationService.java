@@ -12,4 +12,6 @@ public interface ApplicationService {
     List<Application> getApplications(int page, Sort.Direction sort);
 
     Application getSingleApplication(Long id);
+
+    List<Application> getAppWithHistory(int pageNumber, Sort.Direction sort);
 }

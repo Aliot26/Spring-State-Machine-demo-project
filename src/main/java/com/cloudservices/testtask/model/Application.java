@@ -1,6 +1,5 @@
 package com.cloudservices.testtask.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,6 +30,6 @@ public class Application {
 
     @OneToMany
     @JoinColumn(name = "appId")
-    private List<AppHistory> appHistoryList;
+    private List<History> appHistoryList;
 
 }
