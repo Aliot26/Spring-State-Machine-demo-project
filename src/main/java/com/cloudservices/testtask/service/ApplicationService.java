@@ -10,4 +10,6 @@ import java.util.List;
  */
 public interface ApplicationService {
     List<Application> getApplications(int page, Sort.Direction sort);
+
+    Application getSingleApplication(Long id);
 }

@@ -23,4 +23,9 @@ public class ApplicationServiceImpl implements ApplicationService {
     public List<Application> getApplications(int page, Sort.Direction sort) {
         return applicationRepository.findAllApplications(PageRequest.of(page, PAGE_SIZE, Sort.by(sort, "id")));
     }
+
+    @Override
+    public Application getSingleApplication(Long id) {
+        return applicationRepository.findById(id).orElseThrow();
+    }
 }

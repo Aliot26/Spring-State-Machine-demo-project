@@ -15,4 +15,6 @@ import java.util.List;
 public interface ApplicationRepository extends JpaRepository<Application, Long> {
     @Query("select a from Application a")
     List<Application> findAllApplications(Pageable page);
+
+
 }

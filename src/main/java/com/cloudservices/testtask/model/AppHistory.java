@@ -1,6 +1,8 @@
 package com.cloudservices.testtask.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -12,6 +14,8 @@ import java.time.LocalDateTime;
 @Entity
 @Setter
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class AppHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,6 +24,7 @@ public class AppHistory {
     @Column(name = "date_of_change")
     private LocalDateTime dateOfChange;
 
+    @Enumerated(EnumType.STRING)
     private EStatus status;
 
     private String reason;
@@ -27,4 +32,6 @@ public class AppHistory {
     private Long appNumber;
 
     private Long appId;
+
+
 }
