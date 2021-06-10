@@ -12,7 +12,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -62,26 +61,23 @@ public class ApplicationServiceImpl implements ApplicationService {
         return applicationRepository.save(app);
     }
 
-//    @Override
-//    public boolean changeStatus(EStatus status, Long id) {
-//        Application app = getSingleApplication(id);
-//        EStatus eStatus = app.getStatus();
-//        if (eStatus.equals(EStatus.CREATED) && status.equals(EStatus.VERIFIED)) {
-//            app.setStatus(status);
-//        } else if (eStatus.equals(EStatus.VERIFIED) && status.equals(EStatus.ACCEPTED)) {
-//            app.setStatus(status);
-//        } else if (eStatus.equals(EStatus.ACCEPTED) && status.equals(EStatus.PUBLISHED)) {
-//            app.setStatus(status);
-//        } else if (eStatus.equals(EStatus.CREATED) && status.equals(EStatus.DELETED)) {
-//            app.setStatus(status);
-//        } else if (eStatus.equals(EStatus.VERIFIED) && status.equals(EStatus.REJECTED)) {
-//            app.setStatus(status);
-//        } else if (eStatus.equals(EStatus.ACCEPTED) && status.equals(EStatus.ACCEPTED)) {
-//            app.setStatus(status);
-//        }else {
-//            return false;
-//        }
-//    }
+    @Override
+    public boolean updateApplication(Long id, Application application) {
+        Application app = getSingleApplication(id);
+        if (app.getStatus().equals(EStatus.CREATED)
+                || app.getStatus().equals(EStatus.VERIFIED)) {
+            app.setTitle(application.getTitle());
+            app.setContent(application.getContent());
+            applicationRepository.save(app);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void replaceStatusApp(Application app) {
+        applicationRepository.save(app);
+    }
 
 
     private List<History> extractAppHistory(List<History> appHistory, Long id) {

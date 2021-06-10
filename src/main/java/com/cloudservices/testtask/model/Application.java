@@ -29,6 +29,8 @@ public class Application {
     @Enumerated(EnumType.STRING)
     private EStatus status;
 
+    private Long appNumber;
+
     @OneToMany(cascade = {CascadeType.ALL})
     @JoinColumn(name = "appId")
     private List<History> appHistoryList = new ArrayList<>();
