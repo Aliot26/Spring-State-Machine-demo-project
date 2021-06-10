@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /*
@@ -28,8 +29,8 @@ public class Application {
     @Enumerated(EnumType.STRING)
     private EStatus status;
 
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.ALL})
     @JoinColumn(name = "appId")
-    private List<History> appHistoryList;
+    private List<History> appHistoryList = new ArrayList<>();
 
 }

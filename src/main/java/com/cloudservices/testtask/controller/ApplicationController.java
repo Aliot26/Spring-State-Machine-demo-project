@@ -6,10 +6,10 @@ import com.cloudservices.testtask.dto.ApplicationDto;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -25,22 +25,39 @@ public class ApplicationController {
     private final ApplicationService applicationService;
 
     @GetMapping("/applications")
-    public List<ApplicationDto> getApplications(@RequestParam(required = false) Integer page, Sort.Direction sort) {
+    public  ResponseEntity<List<ApplicationDto>> getApplications(@RequestParam(required = false) Integer page,
+                                                                 Sort.Direction sort) {
         int pageNumber = page != null && page >= 0 ? page : 0;
-        Sort.Direction sortDirection = sort != null ? sort: Sort.Direction.ASC;
-        return mapToApplicationDtos(applicationService.getApplications(pageNumber, sortDirection));
+        Sort.Direction sortDirection = sort != null ? sort : Sort.Direction.ASC;
+        return new ResponseEntity<>(mapToApplicationDtos(applicationService.getApplications(pageNumber, sortDirection)),
+                HttpStatus.OK);
     }
 
     @GetMapping("/applications/{id}")
-    public Application getSingleApplication(@PathVariable Long id) {
-        return applicationService.getSingleApplication(id);
+    public ResponseEntity<Application> getSingleApplication(@PathVariable Long id) {
+        return new ResponseEntity<>(applicationService.getSingleApplication(id),
+                HttpStatus.OK);
     }
 
     @GetMapping("applications/history")
-    public List<Application> getApplicationsWithHistory(@RequestParam(required = false) Integer page, Sort.Direction sort) {
+    public ResponseEntity<List<Application>> getApplicationsWithHistory(@RequestParam(required = false) Integer page,
+                                                        Sort.Direction sort) {
         int pageNumber = page != null && page >= 0 ? page : 0;
-        Sort.Direction sortDirection = sort != null ? sort: Sort.Direction.ASC;
-        return applicationService.getAppWithHistory(pageNumber, sortDirection);
+        Sort.Direction sortDirection = sort != null ? sort : Sort.Direction.ASC;
+        return new ResponseEntity<>(applicationService.getAppWithHistory(pageNumber, sortDirection),
+                HttpStatus.OK);
     }
+
+    @PostMapping("applications")
+    public ResponseEntity<Application> addApplication(@RequestBody Application application) {
+        if (application.getTitle().isEmpty() || application.getContent().isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } else {
+            applicationService.addApplication(application);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        }
+    }
+
+
 
 }

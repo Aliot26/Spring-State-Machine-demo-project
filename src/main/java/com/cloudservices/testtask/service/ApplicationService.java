@@ -1,6 +1,7 @@
 package com.cloudservices.testtask.service;
 
 import com.cloudservices.testtask.model.Application;
+import com.cloudservices.testtask.model.EStatus;
 import org.springframework.data.domain.Sort;
 
 import java.util.List;
@@ -14,4 +15,8 @@ public interface ApplicationService {
     Application getSingleApplication(Long id);
 
     List<Application> getAppWithHistory(int pageNumber, Sort.Direction sort);
+
+    Application addApplication(Application application);
+
+//    boolean changeStatus(EStatus status, Long id);
 }
