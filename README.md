@@ -6,7 +6,7 @@ This is a software system for applications management that has been developed to
 - application rejection / removal
 - history of changes storage. 
 
-##Project setup and used technologies:
+## Project setup and used technologies:
 - Java 11
 - Spring Framework 
 - Spring Boot 
