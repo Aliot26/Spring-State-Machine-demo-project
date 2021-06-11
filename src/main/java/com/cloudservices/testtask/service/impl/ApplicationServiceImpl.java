@@ -62,23 +62,22 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public boolean updateApplication(Long id, Application application) {
-        Application app = getSingleApplication(id);
+    public Application updateApplication(Application application) {
+        Application app = getSingleApplication(application.getId());
         if (app.getStatus().equals(EStatus.CREATED)
                 || app.getStatus().equals(EStatus.VERIFIED)) {
             app.setTitle(application.getTitle());
             app.setContent(application.getContent());
-            applicationRepository.save(app);
-            return true;
+
+            return applicationRepository.save(app);
         }
-        return false;
+        return null;
     }
 
     @Override
-    public void replaceStatusApp(Application app) {
-        applicationRepository.save(app);
+    public Application replaceStatusApp(Application app) {
+        return applicationRepository.save(app);
     }
-
 
     private List<History> extractAppHistory(List<History> appHistory, Long id) {
         return appHistory.stream()

@@ -30,7 +30,6 @@ public class HistoryServiceImpl implements HistoryService {
         } else if (prevStatus.equals(EStatus.VERIFIED) && nextStatus.equals(EStatus.ACCEPTED)) {
             return historyRepository.save(line);
         } else if (prevStatus.equals(EStatus.ACCEPTED) && nextStatus.equals(EStatus.PUBLISHED)) {
-//            app.setAppNumber();
             return historyRepository.save(line);
         } else if (prevStatus.equals(EStatus.CREATED) && nextStatus.equals(EStatus.DELETED)
                 && !history.getReason().isEmpty()) {

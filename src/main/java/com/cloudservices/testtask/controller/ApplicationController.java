@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 import static com.cloudservices.testtask.dto.ApplicationDtoMapper.mapToApplicationDtos;
 
@@ -30,8 +31,8 @@ public class ApplicationController {
     @GetMapping("/applications")
     public ResponseEntity<List<ApplicationDto>> getApplications(@RequestParam(required = false) Integer page,
                                                                 Sort.Direction sort) {
-        int pageNumber = page != null && page >= 0 ? page : 0;
-        Sort.Direction sortDirection = sort != null ? sort : Sort.Direction.ASC;
+        int pageNumber = (page != null && page >= 0) ? page : 0;
+        Sort.Direction sortDirection = (sort != null) ? sort : Sort.Direction.ASC;
         return new ResponseEntity<>(mapToApplicationDtos(applicationService.getApplications(pageNumber, sortDirection)),
                 HttpStatus.OK);
     }
@@ -57,17 +58,16 @@ public class ApplicationController {
                 || application.getContent().isEmpty()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else {
-            applicationService.addApplication(application);
-            return new ResponseEntity<>(HttpStatus.CREATED);
+            return new ResponseEntity<>(applicationService.addApplication(application), HttpStatus.CREATED);
         }
     }
 
     @PutMapping("applications/{id}")
     public ResponseEntity<Application> editApplication(@PathVariable Long id,
                                                        @RequestBody Application application) {
-
-        if (applicationService.updateApplication(id, application)) {
-            return new ResponseEntity<>(HttpStatus.OK);
+        Application updatedApp = applicationService.updateApplication(application);
+        if (updatedApp != null) {
+            return new ResponseEntity<>(updatedApp, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
@@ -75,19 +75,17 @@ public class ApplicationController {
     @PutMapping("applications/status/{id}")
     public ResponseEntity<Application> changeStatus(@PathVariable Long id,
                                                     @RequestBody History history) {
-
         Application app = applicationService.getSingleApplication(id);
         EStatus prevStatus = app.getStatus();
         EStatus nextStatus = history.getStatus();
 
         if (historyService.addHistory(id, history, prevStatus, nextStatus) != null) {
             app.setStatus(nextStatus);
-            applicationService.replaceStatusApp(app);
-            return new ResponseEntity<>(HttpStatus.OK);
+            if(app.getStatus().equals(EStatus.PUBLISHED)){
+                app.setAppNumber(UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE);
+            }
+            return new ResponseEntity<>(applicationService.replaceStatusApp(app), HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-
     }
-
-
 }

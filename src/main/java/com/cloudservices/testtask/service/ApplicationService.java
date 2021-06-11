@@ -17,7 +17,7 @@ public interface ApplicationService {
 
     Application addApplication(Application application);
 
-    boolean updateApplication(Long id, Application application);
+    Application updateApplication(Application application);
 
-    void replaceStatusApp(Application app);
+    Application replaceStatusApp(Application app);
 }

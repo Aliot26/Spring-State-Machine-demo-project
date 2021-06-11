@@ -34,5 +34,4 @@ public class Application {
     @OneToMany(cascade = {CascadeType.ALL})
     @JoinColumn(name = "appId")
     private List<History> appHistoryList = new ArrayList<>();
-
 }

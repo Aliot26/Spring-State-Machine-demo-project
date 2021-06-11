@@ -8,6 +8,4 @@ import com.cloudservices.testtask.model.History;
  */
 public interface HistoryService {
     History addHistory(Long id, History history, EStatus prev, EStatus next);
-
-
 }

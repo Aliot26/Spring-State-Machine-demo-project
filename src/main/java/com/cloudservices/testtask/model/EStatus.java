@@ -11,7 +11,6 @@ public enum EStatus {
     REJECTED("REJECTED"),
     PUBLISHED("PUBLISHED");
 
-
     private String status;
 
     EStatus(String estatus) {

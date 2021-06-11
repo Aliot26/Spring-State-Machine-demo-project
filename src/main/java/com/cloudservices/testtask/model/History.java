@@ -28,5 +28,4 @@ public class History {
     private String reason;
 
     private Long appId;
-
 }
