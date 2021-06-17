@@ -31,11 +31,11 @@ public class ApplicationController {
     @GetMapping("/applications")
     public ResponseEntity<List<ApplicationDto>> getApplications(@RequestParam(required = false) Integer page,
                                                                 Sort.Direction sort,
-                                                                @RequestParam(required = false, value="title") String  title) {
+                                                                @RequestParam(required = false, value="title") String  title,
+                                                                @RequestParam(required = false, value="status") String  status) {
         int pageNumber = (page != null && page >= 0) ? page : 0;
         Sort.Direction sortDirection = (sort != null) ? sort : Sort.Direction.ASC;
-        String titleApp = (!title.isEmpty()) ? title : null;
-        return new ResponseEntity<>(mapToApplicationDtos(applicationService.getApplications(pageNumber, sortDirection, titleApp)),
+        return new ResponseEntity<>(mapToApplicationDtos(applicationService.getApplications(pageNumber, sortDirection, title, status)),
                 HttpStatus.OK);
     }
 
@@ -48,10 +48,11 @@ public class ApplicationController {
     @GetMapping("applications/history")
     public ResponseEntity<List<Application>> getApplicationsWithHistory(@RequestParam(required = false) Integer page,
                                                                         Sort.Direction sort,
-                                                                        @RequestParam(required = false, value="title") String  title) {
+                                                                        @RequestParam(required = false, value="title") String  title,
+                                                                        @RequestParam(required = false, value="status") String  status) {
         int pageNumber = page != null && page >= 0 ? page : 0;
         Sort.Direction sortDirection = sort != null ? sort : Sort.Direction.ASC;
-        return new ResponseEntity<>(applicationService.getAppWithHistory(pageNumber, sortDirection, title),
+        return new ResponseEntity<>(applicationService.getAppWithHistory(pageNumber, sortDirection, title, status),
                 HttpStatus.OK);
     }
 

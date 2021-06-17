@@ -9,11 +9,11 @@ import java.util.List;
  *Created on 09.06.2021
  */
 public interface ApplicationService {
-    List<Application> getApplications(int page, Sort.Direction sort, String title);
+    List<Application> getApplications(int page, Sort.Direction sort, String title, String status);
 
     Application getSingleApplication(Long id);
 
-    List<Application> getAppWithHistory(int pageNumber, Sort.Direction sort, String title);
+    List<Application> getAppWithHistory(int pageNumber, Sort.Direction sort, String title, String status);
 
     Application addApplication(Application application);
 

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /*
  *Created on 09.06.2021
@@ -26,8 +27,13 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final HistoryRepository historyRepository;
 
     @Override
-    public List<Application> getApplications(int page, Sort.Direction sort, String title) {
-        return applicationRepository.findAllApplications(PageRequest.of(page, PAGE_SIZE, Sort.by(sort, "id")), title);
+    public List<Application> getApplications(int page, Sort.Direction sort, String title, String status) {
+        EStatus eStatus = Stream.of(EStatus.values())
+                .filter(s -> s.getStatus().equals(status))
+                .findAny()
+                .orElse(null);
+        return applicationRepository.findAllApplications(PageRequest.of(page, PAGE_SIZE, Sort.by(sort, "id")),
+                title, eStatus);
     }
 
     @Override
@@ -36,8 +42,12 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public List<Application> getAppWithHistory(int page, Sort.Direction sort, String title) {
-        List<Application> allApps = applicationRepository.findAllApplications(PageRequest.of(page, PAGE_SIZE, Sort.by(sort, "id")), title);
+    public List<Application> getAppWithHistory(int page, Sort.Direction sort, String title, String status) {
+        EStatus eStatus = Stream.of(EStatus.values())
+                .filter(s -> s.getStatus().equals(status))
+                .findAny()
+                .orElse(null);
+        List<Application> allApps = applicationRepository.findAllApplications(PageRequest.of(page, PAGE_SIZE, Sort.by(sort, "id")), title, eStatus);
         List<Long> ids = allApps.stream()
                 .map(Application::getId)
                 .collect(Collectors.toList());

@@ -5,6 +5,7 @@ import com.cloudservices.testtask.model.EStatus;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -14,8 +15,9 @@ import java.util.List;
  */
 @Repository
 public interface ApplicationRepository extends JpaRepository<Application, Long> {
-    @Query("select a from Application a where (:title is null or a.title = :title)")
-    List<Application> findAllApplications(Pageable page, String title);
+    @Query("select a from Application a where (a.title = :title or :title is null or :title ='')" +
+            " and (a.status = :status or :status is null or :status = '')")
+    List<Application> findAllApplications(Pageable page, @Param("title") String title, @Param("status") EStatus status);
 
     List<Application> findAllByTitleContaining(String title);
 }
