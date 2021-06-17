@@ -30,10 +30,12 @@ public class ApplicationController {
 
     @GetMapping("/applications")
     public ResponseEntity<List<ApplicationDto>> getApplications(@RequestParam(required = false) Integer page,
-                                                                Sort.Direction sort) {
+                                                                Sort.Direction sort,
+                                                                @RequestParam(required = false, value="title") String  title) {
         int pageNumber = (page != null && page >= 0) ? page : 0;
         Sort.Direction sortDirection = (sort != null) ? sort : Sort.Direction.ASC;
-        return new ResponseEntity<>(mapToApplicationDtos(applicationService.getApplications(pageNumber, sortDirection)),
+        String titleApp = (!title.isEmpty()) ? title : null;
+        return new ResponseEntity<>(mapToApplicationDtos(applicationService.getApplications(pageNumber, sortDirection, titleApp)),
                 HttpStatus.OK);
     }
 
@@ -45,11 +47,21 @@ public class ApplicationController {
 
     @GetMapping("applications/history")
     public ResponseEntity<List<Application>> getApplicationsWithHistory(@RequestParam(required = false) Integer page,
-                                                                        Sort.Direction sort) {
+                                                                        Sort.Direction sort,
+                                                                        @RequestParam(required = false, value="title") String  title) {
         int pageNumber = page != null && page >= 0 ? page : 0;
         Sort.Direction sortDirection = sort != null ? sort : Sort.Direction.ASC;
-        return new ResponseEntity<>(applicationService.getAppWithHistory(pageNumber, sortDirection),
+        return new ResponseEntity<>(applicationService.getAppWithHistory(pageNumber, sortDirection, title),
                 HttpStatus.OK);
+    }
+
+    @GetMapping("applications/{title}")
+    public ResponseEntity<List<Application>> getApplicationsByTitle(@RequestParam(value="title") String  title) {
+
+        if(!title.isEmpty()){
+            return new ResponseEntity<>(applicationService.getApplicationsByTitle(title), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @PostMapping("applications")
@@ -81,7 +93,7 @@ public class ApplicationController {
 
         if (historyService.addHistory(id, history, prevStatus, nextStatus) != null) {
             app.setStatus(nextStatus);
-            if(app.getStatus().equals(EStatus.PUBLISHED)){
+            if (app.getStatus().equals(EStatus.PUBLISHED)) {
                 app.setAppNumber(UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE);
             }
             return new ResponseEntity<>(applicationService.replaceStatusApp(app), HttpStatus.OK);

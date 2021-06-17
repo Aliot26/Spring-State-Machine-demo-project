@@ -26,8 +26,8 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final HistoryRepository historyRepository;
 
     @Override
-    public List<Application> getApplications(int page, Sort.Direction sort) {
-        return applicationRepository.findAllApplications(PageRequest.of(page, PAGE_SIZE, Sort.by(sort, "id")));
+    public List<Application> getApplications(int page, Sort.Direction sort, String title) {
+        return applicationRepository.findAllApplications(PageRequest.of(page, PAGE_SIZE, Sort.by(sort, "id")), title);
     }
 
     @Override
@@ -36,8 +36,8 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public List<Application> getAppWithHistory(int page, Sort.Direction sort) {
-        List<Application> allApps = applicationRepository.findAllApplications(PageRequest.of(page, PAGE_SIZE, Sort.by(sort, "id")));
+    public List<Application> getAppWithHistory(int page, Sort.Direction sort, String title) {
+        List<Application> allApps = applicationRepository.findAllApplications(PageRequest.of(page, PAGE_SIZE, Sort.by(sort, "id")), title);
         List<Long> ids = allApps.stream()
                 .map(Application::getId)
                 .collect(Collectors.toList());
@@ -77,6 +77,11 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public Application replaceStatusApp(Application app) {
         return applicationRepository.save(app);
+    }
+
+    @Override
+    public List<Application> getApplicationsByTitle(String title) {
+        return applicationRepository.findAllByTitleContaining(title);
     }
 
     private List<History> extractAppHistory(List<History> appHistory, Long id) {
