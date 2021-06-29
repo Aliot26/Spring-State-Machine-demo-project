@@ -29,12 +29,11 @@ public class ApplicationController {
     private final HistoryService historyService;
 
     @GetMapping("/applications")
-    public ResponseEntity<List<ApplicationDto>> getApplications(@RequestParam(required = false) Integer page,
-                                                                Sort.Direction sort,
+    public ResponseEntity<List<ApplicationDto>> getApplications(@RequestParam(defaultValue = "0") Integer pageNumber,
+                                                                @RequestParam(defaultValue = "Sort.Direction.ASC") Sort.Direction sortDirection,
                                                                 @RequestParam(required = false, value="title") String  title,
                                                                 @RequestParam(required = false, value="status") String  status) {
-        int pageNumber = (page != null && page >= 0) ? page : 0;
-        Sort.Direction sortDirection = (sort != null) ? sort : Sort.Direction.ASC;
+
         return new ResponseEntity<>(mapToApplicationDtos(applicationService.getApplications(pageNumber, sortDirection, title, status)),
                 HttpStatus.OK);
     }
@@ -46,12 +45,11 @@ public class ApplicationController {
     }
 
     @GetMapping("applications/history")
-    public ResponseEntity<List<Application>> getApplicationsWithHistory(@RequestParam(required = false) Integer page,
-                                                                        Sort.Direction sort,
+    public ResponseEntity<List<Application>> getApplicationsWithHistory(@RequestParam(defaultValue = "0") Integer pageNumber,
+                                                                        @RequestParam(defaultValue = "Sort.Direction.ASC") Sort.Direction sortDirection,
                                                                         @RequestParam(required = false, value="title") String  title,
                                                                         @RequestParam(required = false, value="status") String  status) {
-        int pageNumber = page != null && page >= 0 ? page : 0;
-        Sort.Direction sortDirection = sort != null ? sort : Sort.Direction.ASC;
+
         return new ResponseEntity<>(applicationService.getAppWithHistory(pageNumber, sortDirection, title, status),
                 HttpStatus.OK);
     }
