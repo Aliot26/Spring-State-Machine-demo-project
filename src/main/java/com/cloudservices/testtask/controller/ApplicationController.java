@@ -56,7 +56,7 @@ public class ApplicationController {
                 HttpStatus.OK);
     }
 
-    @GetMapping("applications/{title}")
+    @GetMapping("applications/title/{title}")
     public ResponseEntity<List<Application>> getApplicationsByTitle(@RequestParam(value="title") String  title) {
 
         if(!title.isEmpty()){
