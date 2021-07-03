@@ -2,10 +2,7 @@ package com.cloudservices.testtask.controller;
 
 import com.cloudservices.testtask.dto.ApplicationDto;
 import com.cloudservices.testtask.model.Application;
-import com.cloudservices.testtask.model.EStatus;
-import com.cloudservices.testtask.model.History;
 import com.cloudservices.testtask.service.ApplicationService;
-import com.cloudservices.testtask.service.HistoryService;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
@@ -14,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 import static com.cloudservices.testtask.dto.ApplicationDtoMapper.mapToApplicationDtos;
 
@@ -26,7 +22,6 @@ import static com.cloudservices.testtask.dto.ApplicationDtoMapper.mapToApplicati
 @RequiredArgsConstructor
 public class ApplicationController {
     private final ApplicationService applicationService;
-    private final HistoryService historyService;
 
     @GetMapping("/applications")
     public ResponseEntity<List<ApplicationDto>> getApplications(@RequestParam(defaultValue = "0") Integer pageNumber,
@@ -44,15 +39,15 @@ public class ApplicationController {
                 HttpStatus.OK);
     }
 
-    @GetMapping("applications/history")
-    public ResponseEntity<List<Application>> getApplicationsWithHistory(@RequestParam(defaultValue = "0") Integer pageNumber,
-                                                                        @RequestParam(defaultValue = "Sort.Direction.ASC") Sort.Direction sortDirection,
-                                                                        @RequestParam(required = false, value="title") String  title,
-                                                                        @RequestParam(required = false, value="status") String  status) {
-
-        return new ResponseEntity<>(applicationService.getAppWithHistory(pageNumber, sortDirection, title, status),
-                HttpStatus.OK);
-    }
+//    @GetMapping("applications/history")
+//    public ResponseEntity<List<Application>> getApplicationsWithHistory(@RequestParam(defaultValue = "0") Integer pageNumber,
+//                                                                        @RequestParam(defaultValue = "Sort.Direction.ASC") Sort.Direction sortDirection,
+//                                                                        @RequestParam(required = false, value="title") String  title,
+//                                                                        @RequestParam(required = false, value="status") String  status) {
+//
+//        return new ResponseEntity<>(applicationService.getAppWithHistory(pageNumber, sortDirection, title, status),
+//                HttpStatus.OK);
+//    }
 
     @GetMapping("applications/{title}")
     public ResponseEntity<List<Application>> getApplicationsByTitle(@RequestParam(value="title") String  title) {
@@ -81,6 +76,14 @@ public class ApplicationController {
             return new ResponseEntity<>(updatedApp, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @PutMapping("applications/{id}/status/{status}")
+    public ResponseEntity<Application> changeStatus(@PathVariable Long id,
+                                                    @PathVariable String status,
+                                                    @RequestBody Application application){
+        applicationService.changeStatus(id, status, application);
+        return null;
     }
 
 //    @PutMapping("applications/status/{id}")

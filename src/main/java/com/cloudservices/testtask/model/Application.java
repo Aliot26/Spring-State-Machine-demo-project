@@ -28,9 +28,9 @@ public class Application {
 
     private Long appNumber;
 
-    @OneToMany(cascade = {CascadeType.ALL})
-    @JoinColumn(name = "appId")
-    private List<History> appHistoryList = new ArrayList<>();
+//    @OneToMany(cascade = {CascadeType.ALL})
+//    @JoinColumn(name = "appId")
+//    private List<History> appHistoryList = new ArrayList<>();
 
     public AppStates getStatus(){
         return AppStates.valueOf(this.status);
