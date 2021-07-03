@@ -83,20 +83,20 @@ public class ApplicationController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @PutMapping("applications/status/{id}")
-    public ResponseEntity<Application> changeStatus(@PathVariable Long id,
-                                                    @RequestBody History history) {
-        Application app = applicationService.getSingleApplication(id);
-        EStatus prevStatus = app.getStatus();
-        EStatus nextStatus = history.getStatus();
-
-        if (historyService.addHistory(id, history, prevStatus, nextStatus) != null) {
-            app.setStatus(nextStatus);
-            if (app.getStatus().equals(EStatus.PUBLISHED)) {
-                app.setAppNumber(UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE);
-            }
-            return new ResponseEntity<>(applicationService.replaceStatusApp(app), HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    }
+//    @PutMapping("applications/status/{id}")
+//    public ResponseEntity<Application> changeStatus(@PathVariable Long id,
+//                                                    @RequestBody History history) {
+//        Application app = applicationService.getSingleApplication(id);
+//        EStatus prevStatus = app.getStatus();
+//        EStatus nextStatus = history.getStatus();
+//
+//        if (historyService.addHistory(id, history, prevStatus, nextStatus) != null) {
+//            app.setStatus(nextStatus);
+//            if (app.getStatus().equals(EStatus.PUBLISHED)) {
+//                app.setAppNumber(UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE);
+//            }
+//            return new ResponseEntity<>(applicationService.replaceStatusApp(app), HttpStatus.OK);
+//        }
+//        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//    }
 }
