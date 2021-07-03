@@ -24,12 +24,19 @@ public class Application {
 
     private String content;
 
-    @Enumerated(EnumType.STRING)
-    private EStatus status;
+    private String status;
 
     private Long appNumber;
 
     @OneToMany(cascade = {CascadeType.ALL})
     @JoinColumn(name = "appId")
     private List<History> appHistoryList = new ArrayList<>();
+
+    public AppStates getStatus(){
+        return AppStates.valueOf(this.status);
+    }
+
+    public void setStatus(AppStates as){
+        this.status = as.name();
+    }
 }

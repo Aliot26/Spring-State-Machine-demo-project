@@ -22,10 +22,17 @@ public class History {
     @Column(name = "date_of_change")
     private LocalDateTime dateOfChange;
 
-    @Enumerated(EnumType.STRING)
-    private EStatus status;
+    private String status;
 
     private String reason;
 
     private Long appId;
+
+    public AppStates getStatus(){
+        return AppStates.valueOf(this.status);
+    }
+
+    public void setStatus(AppStates as){
+        this.status = as.name();
+    }
 }

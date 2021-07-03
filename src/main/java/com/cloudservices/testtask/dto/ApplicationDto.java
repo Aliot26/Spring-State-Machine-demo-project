@@ -1,6 +1,6 @@
 package com.cloudservices.testtask.dto;
 
-import com.cloudservices.testtask.model.EStatus;
+import com.cloudservices.testtask.model.AppStates;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -13,5 +13,5 @@ public class ApplicationDto {
     private Long id;
     private String title;
     private String content;
-    private EStatus status;
+    private AppStates status;
 }
