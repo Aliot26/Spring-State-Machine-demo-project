@@ -25,7 +25,7 @@ public class ApplicationController {
 
     @GetMapping("/applications")
     public ResponseEntity<List<ApplicationDto>> getApplications(@RequestParam(defaultValue = "0") Integer pageNumber,
-                                                                @RequestParam(defaultValue = "Sort.Direction.ASC") Sort.Direction sortDirection,
+                                                                @RequestParam(defaultValue = "ASC") Sort.Direction sortDirection,
                                                                 @RequestParam(required = false, value="title") String  title,
                                                                 @RequestParam(required = false, value="status") String  status) {
 
@@ -78,11 +78,10 @@ public class ApplicationController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @PutMapping("applications/{id}/status/{status}")
+    @PutMapping("applications/{id}/event/{event}")
     public ResponseEntity<Application> changeStatus(@PathVariable Long id,
-                                                    @PathVariable String status,
-                                                    @RequestBody Application application){
-        applicationService.changeStatus(id, status, application);
+                                                    @PathVariable String event){
+        applicationService.changeStatus(id, event);
         return null;
     }
 

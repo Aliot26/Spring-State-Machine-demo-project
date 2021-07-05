@@ -13,5 +13,5 @@ public class ApplicationDto {
     private Long id;
     private String title;
     private String content;
-    private AppStates status;
+    private String status;
 }

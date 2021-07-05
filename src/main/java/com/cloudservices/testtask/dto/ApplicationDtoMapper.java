@@ -23,7 +23,7 @@ public class ApplicationDtoMapper {
                 .id(app.getId())
                 .title(app.getTitle())
                 .content(app.getContent())
-                .status(app.getAppState())
+                .status(app.getStatus().name())
                 .build();
     }
 }

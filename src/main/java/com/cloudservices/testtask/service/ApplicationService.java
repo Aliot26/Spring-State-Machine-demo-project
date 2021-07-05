@@ -3,6 +3,7 @@ package com.cloudservices.testtask.service;
 import com.cloudservices.testtask.model.*;
 import com.cloudservices.testtask.repository.ApplicationRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.messaging.Message;
@@ -32,12 +33,14 @@ public class ApplicationService {
 
 
     public List<Application> getApplications(int page, Sort.Direction sort, String title, String status) {
+
         AppStates state = Stream.of(AppStates.values())
-                .filter(s -> s.name().equals(status))
+                .filter(s -> s.name().equals(status.trim().toUpperCase()))
                 .findAny()
                 .orElse(null);
+        String stateString = state.name();
         return applicationRepository.findAllApplications(PageRequest.of(page, PAGE_SIZE, Sort.by(sort, "id")),
-                title, state);
+                title, stateString);
     }
 
     public Application getSingleApplication(Long id) {
@@ -101,4 +104,7 @@ public class ApplicationService {
     }
 
 
+    public void changeStatus(Long id, String event) {
+
+    }
 }
